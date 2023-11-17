@@ -1,9 +1,11 @@
 <script setup>
+import TheNavbar from './components/TheNavbar.vue';
+
 import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <h1 class="text-blue-800">hello vue 3</h1>
+  <TheNavbar></TheNavbar>
 
   <RouterView />
 </template>
