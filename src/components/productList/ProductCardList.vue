@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useCategoryStore } from '@/stores/category.js'
-
+import { formatPrice } from '@/composables/fomatting.js'
 
 const categoryStore = useCategoryStore()
 
@@ -51,7 +51,7 @@ const products = computed(() => {
                 </a>
               </h3>
               <p class="mt-4 text-sm font-medium text-gray-500">
-                {{ product.price.toLocaleString('vi-VN') }}
+                {{ formatPrice(product.price) }}
               </p>
             </div>
           </RouterLink>

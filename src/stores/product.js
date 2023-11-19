@@ -6,11 +6,12 @@ import axios from "axios";
 export const useProductStore = defineStore('product', () => {
 
     const curentProduct = ref(null);
+    const curentProductOption = ref(null);
 
     async function setCurentProduct(pid) {
         const response = await axios.get(`/api/product/detail/${pid}/`);
         curentProduct.value = response.data.product;
     }
 
-    return {curentProduct, setCurentProduct}
+    return {curentProduct, setCurentProduct, curentProductOption}
 })

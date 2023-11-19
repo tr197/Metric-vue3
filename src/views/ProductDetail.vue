@@ -1,98 +1,51 @@
 <script setup>
-import { ref, onBeforeMount, computed } from 'vue'
+import { onBeforeMount, computed } from 'vue'
 import {
   Disclosure,
   DisclosureButton,
   DisclosurePanel,
-  RadioGroup,
-  RadioGroupLabel,
-  RadioGroupOption,
   Tab,
   TabGroup,
   TabList,
   TabPanel,
   TabPanels
 } from '@headlessui/vue'
-import { StarIcon } from '@heroicons/vue/20/solid'
-import { HeartIcon, MinusIcon, PlusIcon } from '@heroicons/vue/24/outline'
-
-// const product = {
-//   name: 'Zip Tote Basket',
-//   price: '$140',
-//   rating: 4,
-//   images: [
-//     {
-//       id: 1,
-//       name: 'Angled view',
-//       src: 'https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg',
-//       alt: 'Angled front view with bag zipped and handles upright.'
-//     }
-//     // More images...
-//   ],
-//   colors: [
-//     { name: 'Washed Black', bgColor: 'bg-gray-700', selectedColor: 'ring-gray-700' },
-//     { name: 'White', bgColor: 'bg-white', selectedColor: 'ring-gray-400' },
-//     { name: 'Washed Gray', bgColor: 'bg-gray-500', selectedColor: 'ring-gray-500' }
-//   ],
-//   description: `
-//     <p>The Zip Tote Basket is the perfect midpoint between shopping tote and comfy backpack. With convertible straps, you can hand carry, should sling, or backpack this convenient and spacious bag. The zip top and durable canvas construction keeps your goods protected for all-day use.</p>
-//   `,
-//   details: [
-//     {
-//       name: 'Features',
-//       items: [
-//         'Multiple strap configurations',
-//         'Spacious interior with top zip',
-//         'Leather handle and tabs',
-//         'Interior dividers',
-//         'Stainless strap loops',
-//         'Double stitched construction',
-//         'Water-resistant'
-//       ]
-//     }
-//     // More sections...
-//   ]
-// }
+import { MinusIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import ProductOptionRadio from '@/components/productDetail/ProductOptionRadio.vue'
 
 import { useProductStore } from '@/stores/product.js'
-
-import { useRoute } from 'vue-router';
-
-const route = useRoute();
+import { useRoute } from 'vue-router'
+import { formatPrice } from '@/composables/fomatting.js'
 
 
-
+const route = useRoute()
 
 const productStore = useProductStore()
 
 const product = computed(() => {
-  return productStore.curentProduct;
+  return productStore.curentProduct
 })
 
-
-onBeforeMount(async() => {
+onBeforeMount(async () => {
   await productStore.setCurentProduct(route.params.pid);
+  productStore.curentProductOption = null;
 })
 
 
-function joinProductImages(product) {
-  return [product.main_image_url].concat(product.other_image_urls);
-}
-
-// const selectedColor = ref(product.colors[0])
 </script>
 
 <template>
   <div class="bg-white">
     <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-      <div class="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
+      <div class="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8" v-if="product">
         <!-- Image gallery -->
         <TabGroup as="div" class="flex flex-col-reverse">
           <!-- Image selector -->
           <div class="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
             <TabList class="grid grid-cols-4 gap-6">
               <Tab
-                v-for="(image, idx) in joinProductImages(product)" key="idx"
+                v-for="(image, idx) in product.image_urls"
+                key="idx"
                 class="relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4"
                 v-slot="{ selected }"
               >
@@ -112,7 +65,7 @@ function joinProductImages(product) {
           </div>
 
           <TabPanels class="aspect-h-1 aspect-w-1 w-full">
-            <TabPanel v-for="image in joinProductImages(product)" :key="image">
+            <TabPanel v-for="image in product.image_urls" :key="image">
               <img
                 :src="image"
                 :alt="image"
@@ -128,11 +81,13 @@ function joinProductImages(product) {
 
           <div class="mt-3">
             <h2 class="sr-only">Product information</h2>
-            <p class="text-3xl tracking-tight text-gray-900">{{ product.price.toLocaleString('vi-VN') }}</p>
+            <p class="text-3xl tracking-tight text-gray-900">
+              {{ formatPrice(product.price) }}
+            </p>
           </div>
 
           <!-- Reviews -->
-          <div class="mt-3">
+          <!-- <div class="mt-3">
             <h3 class="sr-only">Reviews</h3>
             <div class="flex items-center">
               <div class="flex items-center">
@@ -148,68 +103,37 @@ function joinProductImages(product) {
               </div>
               <p class="sr-only">{{ product.rating }} out of 5 stars</p>
             </div>
-          </div>
+          </div> -->
 
           <div class="mt-6">
             <h3 class="sr-only">Description</h3>
 
-            <div class="space-y-6 text-base text-gray-700" >
+            <div class="space-y-6 text-base text-gray-700">
               <p>{{ product.description }}</p>
             </div>
           </div>
 
           <form class="mt-6">
-            <!-- Colors -->
-            <div>
-              <h3 class="text-sm text-gray-600">Color</h3>
-
-              <RadioGroup v-model="selectedColor" class="mt-2">
-                <RadioGroupLabel class="sr-only">Choose a color</RadioGroupLabel>
-                <span class="flex items-center space-x-3">
-                  <RadioGroupOption
-                    as="template"
-                    v-for="color in product.colors"
-                    :key="color.name"
-                    :value="color"
-                    v-slot="{ active, checked }"
-                  >
-                    <div
-                      :class="[
-                        color.selectedColor,
-                        active && checked ? 'ring ring-offset-1' : '',
-                        !active && checked ? 'ring-2' : '',
-                        'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none'
-                      ]"
-                    >
-                      <RadioGroupLabel as="span" class="sr-only">{{ color.name }}</RadioGroupLabel>
-                      <span
-                        aria-hidden="true"
-                        :class="[
-                          color.bgColor,
-                          'h-8 w-8 rounded-full border border-black border-opacity-10'
-                        ]"
-                      />
-                    </div>
-                  </RadioGroupOption>
-                </span>
-              </RadioGroup>
-            </div>
+            <!-- choice options -->
+            <ProductOptionRadio 
+              v-if="product.options.length > 0"
+              :options="product.options"></ProductOptionRadio>
 
             <div class="mt-10 flex">
               <button
                 type="submit"
                 class="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
               >
-                Add to bag
+                Thêm vào giỏ hàng
               </button>
 
-              <button
+              <!-- <button
                 type="button"
                 class="ml-4 flex items-center justify-center rounded-md px-3 py-3 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
               >
                 <HeartIcon class="h-6 w-6 flex-shrink-0" aria-hidden="true" />
                 <span class="sr-only">Add to favorites</span>
-              </button>
+              </button> -->
             </div>
           </form>
 

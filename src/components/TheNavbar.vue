@@ -44,7 +44,10 @@
 
           <div class="flex gap-3 items-center sm:justify-end xl:col-span-4">
             <div class="flex">
-              <div>Trang chủ</div>
+              <div>
+                <RouterLink to="/">Trang chủ</RouterLink>
+                
+              </div>
 
               <!-- Profile dropdown -->
               <Menu as="div" class="relative ml-5 flex-shrink-0">
