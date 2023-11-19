@@ -1,14 +1,13 @@
 <script setup>
-import { computed } from 'vue';
-import { useCategoryStore } from '@/stores/category.js';
+import { computed } from 'vue'
+import { useCategoryStore } from '@/stores/category.js'
 
 
-const categoryStore = useCategoryStore();
+const categoryStore = useCategoryStore()
 
 const products = computed(() => {
-  return categoryStore.productList;
+  return categoryStore.productList
 })
-
 
 // products = {
 //     "id": "2cd74105-6b7a-4b09-97e1-7956b14271b1",
@@ -34,26 +33,28 @@ const products = computed(() => {
           :key="product.id"
           class="group relative border-b border-r border-gray-200 p-4 sm:p-6"
         >
-          <div
-            class="aspect-ratio aspect-[5/4] aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-200 group-hover:opacity-75"
-          >
-            <img
-              :src="product.main_image_url"
-              :alt="product.name"
-              class="h-full w-full object-cover object-center"
-            />
-          </div>
-          <div class="pb-4 pt-10 text-center">
-            <h3 class="text-sm font-medium text-gray-900">
-              <a :href="product.href">
-                <span aria-hidden="true" class="absolute inset-0" />
-                {{ product.name }}
-              </a>
-            </h3>
-            <p class="mt-4 text-sm font-medium text-gray-500">
-              {{ product.price.toLocaleString('vi-VN') }}
-            </p>
-          </div>
+          <RouterLink :to="{ name: 'product-detail', params: { pid: product.id } }">
+            <div
+              class="aspect-ratio aspect-[5/4] aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-200 group-hover:opacity-75"
+            >
+              <img
+                :src="product.main_image_url"
+                :alt="product.name"
+                class="h-full w-full object-cover object-center"
+              />
+            </div>
+            <div class="pb-4 pt-10 text-center">
+              <h3 class="text-sm font-medium text-gray-900">
+                <a :href="product.href">
+                  <span aria-hidden="true" class="absolute inset-0" />
+                  {{ product.name }}
+                </a>
+              </h3>
+              <p class="mt-4 text-sm font-medium text-gray-500">
+                {{ product.price.toLocaleString('vi-VN') }}
+              </p>
+            </div>
+          </RouterLink>
         </div>
       </div>
     </div>
