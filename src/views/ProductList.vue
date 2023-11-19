@@ -25,6 +25,23 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import ProductSidebar from '@/components/productList/ProductSidebar.vue'
 import ProductCardList from '@/components/productList/ProductCardList.vue'
+
+
+const productSidebar = ref(null);
+const productCardList = ref(null);
+
+onMounted(() => {
+  if (productSidebar.value && productCardList.value) {
+    // Nếu cả hai component con đã được khởi tạo, sử dụng nextTick để thực hiện hành động
+    productSidebar.value.$nextTick(() => {
+      productCardList.value.$nextTick(() => {
+        console.log('Các component con đã được khởi tạo hoàn toàn');
+      });
+    });
+  }
+});
+
 </script>

@@ -3,17 +3,25 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 
 import { useCategoryStore } from '@/stores/category.js';
-import { ref, onBeforeMount } from 'vue';
+import { computed, onBeforeMount } from 'vue';
 
-const navigation = ref( [])
+const categoryStore = useCategoryStore();
+
+const navigation = computed(() => {
+  return categoryStore.categories
+})
 
 // current
 
 onBeforeMount(async() => {
-  const categoryStore = useCategoryStore();
   await categoryStore.init();
-  navigation.value = categoryStore.categories;
 })
+
+
+async function getProducts(index, subIndex) {
+  console.log('xxxx', index, subIndex);
+  await categoryStore.getProductStore(index, subIndex);
+}
 
 </script>
 
@@ -24,19 +32,24 @@ onBeforeMount(async() => {
         <ul role="list" class="flex flex-1 flex-col gap-y-7">
           <li>
             <ul role="list" class="-mx-2 space-y-1">
-              <li v-for="item in navigation" :key="item.name">
-                <a v-if="!item.children" :href="item.href" :class="[item.current ? 'bg-gray-50' : 'hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-gray-700']">
-                  {{ item.name }}
-                </a>
+              <li v-for="(item, index) in navigation" :key="index">
+                <button v-if="!item.children" :href="item.href" :class="[item.current ? 'bg-gray-50' : 'hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-gray-700']"
+                  @click="getProducts(index, -1)">
+                  {{ item.name }} : {{ index }}
+                </button>
                 <Disclosure as="div" v-else v-slot="{ open }">
-                  <DisclosureButton :class="[item.current ? 'bg-gray-50' : 'hover:bg-gray-50', 'flex items-center w-full text-left rounded-md p-2 gap-x-3 text-sm leading-6 font-semibold text-gray-700']">
-                    {{ item.name }}
+                  <DisclosureButton :class="[item.current ? 'bg-gray-50' : 'hover:bg-gray-50', 'flex items-center w-full text-left rounded-md p-2 gap-x-3 text-sm leading-6 font-semibold text-gray-700']"
+                    @click="getProducts(index, -1)">
+                    {{ item.name }} : {{ index }}
                     <ChevronRightIcon :class="[open ? 'rotate-90 text-gray-500' : 'text-gray-400', 'ml-auto h-5 w-5 shrink-0']" aria-hidden="true" />
                   </DisclosureButton>
                   <DisclosurePanel as="ul" class="mt-1 px-2">
-                    <li v-for="subItem in item.children" :key="subItem.name">
+                    <li v-for="(subItem, subIndex) in item.children" :key="subIndex">
                       <!-- 44px -->
-                      <DisclosureButton as="a" :href="subItem.href" :class="[subItem.current ? 'bg-gray-50' : 'hover:bg-gray-50', 'block rounded-md py-2 pr-2 pl-4 text-sm leading-6 text-gray-700']">{{ subItem.name }}</DisclosureButton>
+                      <button :class="[subItem.current ? 'bg-gray-50' : 'hover:bg-gray-50', 'block rounded-md py-2 pr-2 pl-4 text-sm leading-6 text-gray-700']"
+                        @click="getProducts(index, subIndex)">
+                        {{ subItem.name }}
+                      </button>
                     </li>
                   </DisclosurePanel>
                 </Disclosure>
