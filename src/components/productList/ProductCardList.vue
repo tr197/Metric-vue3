@@ -35,7 +35,7 @@ const products = computed(() => {
         >
           <RouterLink :to="{ name: 'product-detail', params: { pid: product.id } }">
             <div
-              class="aspect-ratio aspect-[5/4] aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-200 group-hover:opacity-75"
+              class="aspect-ratio aspect-[5/4] overflow-hidden rounded-lg bg-gray-200 group-hover:opacity-75"
             >
               <img
                 :src="product.main_image_url"

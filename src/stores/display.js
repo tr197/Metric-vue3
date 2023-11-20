@@ -2,6 +2,9 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useDisplayStore = defineStore('display', () => {
+
+  const showModalEmail = ref(false)
+
   const showModalLogin = ref(false)
 
   const showLoginOrSignup = ref(true)  // login: true || signup: false
@@ -14,5 +17,13 @@ export const useDisplayStore = defineStore('display', () => {
     showLoginOrSignup.value = !showLoginOrSignup.value;
   }
 
-  return { showModalLogin, showLoginOrSignup, switchOpenModalLogin, switchLoginSignup }
+  function switchOpenModalEmail() {
+    showModalEmail.value = !showModalEmail.value;
+  }
+
+  return { 
+    showModalLogin, showLoginOrSignup,
+    switchOpenModalLogin, switchLoginSignup,
+    showModalEmail, switchOpenModalEmail,
+  }
 })
