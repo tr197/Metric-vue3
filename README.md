@@ -1,35 +1,16 @@
-# VUE3
+# Metric vue app 
+[link sản phẩm](http://54.255.236.150:8899/)
 
-This template should help get you started developing with Vue 3 in Vite.
+## yêu cầu
 
-## Recommended IDE Setup
+- node 18.x
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
-## Customize configuration
+## chạy ứng 
+- cấu hình env (backend url)
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
+- chạy lệnh
+```
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
 ```

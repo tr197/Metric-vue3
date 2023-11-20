@@ -28,7 +28,7 @@
           
           <div class="pt-2 text-sm">
             {{ formatPrice(option.price) }}
-            <span class="text-gray-400">đ</span>
+            <!-- <span class="text-gray-400">đ</span> -->
           </div>
         
           <button

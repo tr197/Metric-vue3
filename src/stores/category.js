@@ -12,12 +12,9 @@ export const useCategoryStore = defineStore('category', () => {
 
   const productList = computed(() => {
     if (curentCategorySubIdx.value < 0) {
-      console.log('1')
       return categories.value[curentCategoryIdx.value]?.products
     }
     else {
-      console.log('2')
-      console.log(curentCategoryIdx.value)
       return categories.value[curentCategoryIdx.value].children[curentCategorySubIdx.value]?.products
     }
   })
@@ -34,7 +31,6 @@ export const useCategoryStore = defineStore('category', () => {
   async function callGetListProduct(categoryId) {
     try {
       const response = await axios.get(`/api/product/list-product/${categoryId}/`)
-      console.log(response)
       return response.data.products
     } catch (error) {
       console.log(error)

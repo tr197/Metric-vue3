@@ -10,11 +10,16 @@ import {
   TabPanel,
   TabPanels
 } from '@headlessui/vue'
-import { MinusIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import { MinusIcon, PlusIcon, ArrowUturnLeftIcon } from '@heroicons/vue/24/outline'
 import ProductOptions from '@/components/productDetail/ProductOptions.vue';
 import ProductComments from '@/components/productDetail/ProductComments.vue';
 import ProductViewed from '@/components/productDetail/ProductViewed.vue';
 import ModalEmail from '@/components/productDetail/modals/ModalEmail.vue';
+
+import {  } from "@heroicons/vue/24/outline";
+
+
+
 
 
 import { useProductStore } from '@/stores/product.js'
@@ -53,6 +58,11 @@ onUnmounted(() => {
 <template>
   <div class="bg-white">
     <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-6xl lg:px-8" v-if="product">
+
+      <RouterLink to="/">
+        <ArrowUturnLeftIcon class="h-6 w-6 text-gray-500" />
+      </RouterLink>
+
       <div class="lg:grid lg:grid-cols-9 lg:items-start lg:gap-x-8">
         <!-- Image gallery -->
         <TabGroup as="div" class="lg:col-span-4 flex flex-col-reverse">

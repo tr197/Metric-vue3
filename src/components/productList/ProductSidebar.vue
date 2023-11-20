@@ -19,7 +19,6 @@ onBeforeMount(async() => {
 
 
 async function getProducts(index, subIndex) {
-  console.log('xxxx', index, subIndex);
   await categoryStore.getProductStore(index, subIndex);
 }
 
@@ -35,12 +34,12 @@ async function getProducts(index, subIndex) {
               <li v-for="(item, index) in navigation" :key="index">
                 <button v-if="!item.children" :href="item.href" :class="[item.current ? 'bg-gray-50' : 'hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-gray-700']"
                   @click="getProducts(index, -1)">
-                  {{ item.name }} : {{ index }}
+                  {{ item.name }}
                 </button>
                 <Disclosure as="div" v-else v-slot="{ open }">
                   <DisclosureButton :class="[item.current ? 'bg-gray-50' : 'hover:bg-gray-50', 'flex items-center w-full text-left rounded-md p-2 gap-x-3 text-sm leading-6 font-semibold text-gray-700']"
                     @click="getProducts(index, -1)">
-                    {{ item.name }} : {{ index }}
+                    {{ item.name }}
                     <ChevronRightIcon :class="[open ? 'rotate-90 text-gray-500' : 'text-gray-400', 'ml-auto h-5 w-5 shrink-0']" aria-hidden="true" />
                   </DisclosureButton>
                   <DisclosurePanel as="ul" class="mt-1 px-2">
