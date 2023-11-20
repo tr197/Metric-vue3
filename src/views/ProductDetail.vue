@@ -11,7 +11,8 @@ import {
   TabPanels
 } from '@headlessui/vue'
 import { MinusIcon, PlusIcon } from '@heroicons/vue/24/outline'
-import ProductOptions from '@/components/productDetail/ProductOptions.vue'
+import ProductOptions from '@/components/productDetail/ProductOptions.vue';
+import ProductComments from '@/components/productDetail/ProductComments.vue';
 import ModalEmail from '@/components/productDetail/modals/ModalEmail.vue';
 
 
@@ -140,17 +141,24 @@ onBeforeMount(async () => {
             </div>
           </section>
         </div>
-
       </div>
 
-      <div class="mt-12 max-w-4xl">
+      <!-- descriptións  -->
+      <section class="mt-12 max-w-4xl"
+        v-if="product.description">
         <h3 class="pb-4 text-xl font-medium">Mô tả sản phẩm</h3>
 
         <div class="space-y-6 text-base text-gray-700">
           <pre>{{ product.description }}</pre>
         </div>
-      </div>
+      </section>
 
+      <!-- comments  -->
+      <section class="mt-12 max-w-4xl"
+        v-if="product.comments.length > 0">
+        <ProductComments :comments="product.comments"></ProductComments>
+      </section>
+      
     </div>
   </div>
 
