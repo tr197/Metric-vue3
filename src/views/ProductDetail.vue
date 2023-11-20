@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount, computed } from 'vue'
+import { onBeforeMount, computed, onUnmounted, watch } from 'vue'
 import {
   Disclosure,
   DisclosureButton,
@@ -13,16 +13,19 @@ import {
 import { MinusIcon, PlusIcon } from '@heroicons/vue/24/outline'
 import ProductOptions from '@/components/productDetail/ProductOptions.vue';
 import ProductComments from '@/components/productDetail/ProductComments.vue';
+import ProductViewed from '@/components/productDetail/ProductViewed.vue';
 import ModalEmail from '@/components/productDetail/modals/ModalEmail.vue';
 
 
 import { useProductStore } from '@/stores/product.js'
 import { useDisplayStore } from '@/stores/display.js'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { formatPrice } from '@/composables/fomatting.js'
 
 
 const route = useRoute()
+
+const router = useRouter();
 
 const displayStore = useDisplayStore()
 const productStore = useProductStore()
@@ -31,11 +34,19 @@ const product = computed(() => {
   return productStore.curentProduct
 })
 
+
+watch(() => router.currentRoute.value.params.pid, (newId, oldID) => {
+  productStore.setCurentProduct(newId);
+});
+
 onBeforeMount(async () => {
   await productStore.setCurentProduct(route.params.pid);
-  productStore.curentProductOption = null;
 })
 
+
+onUnmounted(() => {
+  productStore.addToListViewed(product.value);
+})
 
 </script>
 
@@ -144,9 +155,9 @@ onBeforeMount(async () => {
       </div>
 
       <!-- descriptións  -->
-      <section class="mt-12 max-w-4xl"
+      <section class="mt-16 max-w-4xl"
         v-if="product.description">
-        <h3 class="pb-4 text-xl font-medium">Mô tả sản phẩm</h3>
+        <h3 class="pb-4 text-2xl font-medium">Mô tả sản phẩm</h3>
 
         <div class="space-y-6 text-base text-gray-700">
           <pre>{{ product.description }}</pre>
@@ -154,9 +165,13 @@ onBeforeMount(async () => {
       </section>
 
       <!-- comments  -->
-      <section class="mt-12 max-w-4xl"
+      <section class="mt-16 max-w-4xl"
         v-if="product.comments.length > 0">
         <ProductComments :comments="product.comments"></ProductComments>
+      </section>
+
+      <section class="mt-12">
+        <ProductViewed></ProductViewed>
       </section>
       
     </div>

@@ -7,17 +7,17 @@
         'bg-white shadow-sm lg:static lg:overflow-y-visible'
       ]"
     >
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 border-b border-1">
         <div class="relative flex justify-between lg:gap-8 xl:grid xl:grid-cols-12">
           <div class="flex md:absolute md:inset-y-0 md:left-0 lg:static xl:col-span-2">
             <div class="flex flex-shrink-0 items-center">
-              <a href="#">
+              <RouterLink to="/">
                 <img
-                  class="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                  class="h-12 w-auto"
+                  src="https://metric.vn/blog/wp-content/uploads/2022/06/metric_logo_final-_fullcolor.png"
                   alt="Your Company"
                 />
-              </a>
+              </RouterLink>
             </div>
           </div>
           <div class="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">

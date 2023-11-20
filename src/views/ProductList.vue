@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-full flex-col">
+  <div class="flex min-h-full flex-col sm:mt-8 lg:mt-16">
 
 
     <!-- 3 column wrapper -->
@@ -35,7 +35,6 @@ const productCardList = ref(null);
 
 onMounted(() => {
   if (productSidebar.value && productCardList.value) {
-    // Nếu cả hai component con đã được khởi tạo, sử dụng nextTick để thực hiện hành động
     productSidebar.value.$nextTick(() => {
       productCardList.value.$nextTick(() => {
         console.log('Các component con đã được khởi tạo hoàn toàn');

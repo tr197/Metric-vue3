@@ -27,6 +27,7 @@ export const useCategoryStore = defineStore('category', () => {
     if (categories.value.length === 0) {
       const response = await axios.get('/api/product/categories');
       categories.value = response.data.categories;
+      await getProductStore(0, -1)
     }
   }
 

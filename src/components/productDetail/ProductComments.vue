@@ -8,7 +8,7 @@ defineProps({
 <template>
 
     <div>
-        <h3 class="text-xl font-medium">Nhận xét của người mua hàng</h3>
+        <h3 class="text-2xl font-medium">Nhận xét của người mua hàng</h3>
     </div>
 
     <ul role="list" class="divide-y divide-gray-100">
